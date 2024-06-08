@@ -3,9 +3,38 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Previsão do Tempo em Itambé, BA</title>
+    <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
-    
+    <h1 class="txtTitle">Previsão do Tempo em Itambé, BA</h1>
+
+    <div id="current-weather">
+        <p class="txtCurrentTemp" id="current-temp"></p>
+    </div>
+
+    <figure class="highcharts-figure">
+        <div id="container"></div>
+    </figure>
+
+    <h2 class="txtTitle2">Previsão para os Próximos 15 Dias</h2>
+    <table id="weather-table">
+        <thead>
+            <tr>
+                <th>Dia</th>
+                <th>Temp Max</th>
+                <th>Temp Min</th>
+                <th>Temp</th>
+            </tr>
+        </thead>
+        <tbody>
+            <!-- Linhas da tabela serão preenchidas aqui -->
+        </tbody>
+    </table>
+    <script src="https://code.highcharts.com/highcharts.js"></script>
+    <script src="https://code.highcharts.com/modules/exporting.js"></script>
+    <script src="https://code.highcharts.com/modules/export-data.js"></script>
+    <script src="https://code.highcharts.com/modules/accessibility.js"></script>
+    <script src="js/script.js"></script>
 </body>
 </html>
