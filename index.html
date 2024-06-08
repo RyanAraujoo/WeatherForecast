@@ -3,21 +3,49 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Previsão do Tempo em Itambé, BA</title>
+    <title>Previsão do Tempo</title>
     <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
-    <h1 class="txtTitle">Previsão do Tempo em Itambé, BA</h1>
+    <h1 class="txtTitle" id="txtTitlePrimary"></h1>
+    
+     <section class="sensor-data">
+        <div class="sensor-readings">
+            <div class="reading">
+                <div class="reading-info">
+                    <div class="reading-title">
+                        <span class="title">Temperatura Atual</span>
+                        <span class="title-value" id="temp_value"></span>
+                    </div> 
+                </div>                    
+            </div>
 
-    <div id="current-weather">
-        <p class="txtCurrentTemp" id="current-temp"></p>
-    </div>
+            <div class="reading">
+                <div class="reading-info">
+                    <div class="reading-title">
+                        <span class="title">Umidade Ambiente Atual</span> 
+                        <span class="title-value" id="umid_value"></span>
+                    </div> 
+                </div>                    
+            </div>
+
+            <div class="reading">
+                <div class="reading-info">
+                    <div class="reading-title">
+                        <span class="title">Condição Atual</span>
+                        <span class="title-value" id="condi_value"></span>
+                    </div> 
+                </div>                   
+            </div>                  
+        </div>
+    </section> 
 
     <figure class="highcharts-figure">
         <div id="container"></div>
     </figure>
 
     <h2 class="txtTitle2">Previsão para os Próximos 15 Dias</h2>
+    
     <table id="weather-table">
         <thead>
             <tr>
@@ -31,6 +59,7 @@
             <!-- Linhas da tabela serão preenchidas aqui -->
         </tbody>
     </table>
+
     <script src="https://code.highcharts.com/highcharts.js"></script>
     <script src="https://code.highcharts.com/modules/exporting.js"></script>
     <script src="https://code.highcharts.com/modules/export-data.js"></script>

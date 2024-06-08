@@ -44,7 +44,7 @@ th, td {
 
 
 
-/* GRAFICO */
+/* Graph */
 
 .highcharts-figure,
 .highcharts-data-table table {
@@ -89,3 +89,79 @@ th, td {
     background: #f1f7ff;
 }
 
+/* Box Dashboard */
+
+.sensor-data {
+    width: 100%;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    margin-bottom: 30px;
+}
+
+.sensor-data h2 {
+    font-size: 24px;
+    margin-bottom: 20px;
+    color: #41B883;
+}
+
+.sensor-readings {
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    /* flex-basis: 100%; */
+}
+
+.reading {
+    flex: 1;
+    flex-basis: calc(25% - 20px);
+    /* background: rgb(229, 223, 223); */
+    min-height: 150px;
+    background: #fff;
+    border-radius: 10px;
+    padding: 20px;
+    margin: 10px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    transition: all 0.5s ease-in-out;
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.3);
+}
+
+.reading-info {
+    display: flex;
+    justify-content: stretch;
+    align-items: center;
+}
+
+.reading-title {
+    display: flex;
+    flex-direction: column;
+    margin: 0 auto;
+}
+
+.title{
+    font-size: 18px;
+    font-family: 'Courier New', Courier, monospace;
+    font-weight: 600;
+    margin-bottom: 5px;
+    text-align: center;
+    color: #8898AA;
+}
+
+.title-status{
+    font-size: 21px;
+    font-family: 'Courier New', Courier, monospace;
+    font-weight: 600;
+    margin-bottom: 5px;
+    text-align: center;
+    color: #8898AA;
+    /* color: #FF5722; */
+}
+
+.title-value {
+    font-size: 20px;
+    font-family: 'Courier New', Courier, monospace;
+    font-weight: bold;
+    text-align: center;
+    color: #32325D;
+}
