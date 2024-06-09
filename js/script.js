@@ -14,11 +14,6 @@ async function fetchWeatherData() {
   }
 }
 
-function formatDate(dateStr) {
-  const date = new Date(dateStr);
-  return date.toLocaleDateString('pt-BR');
-}
-
 function renderAPIinInterface(weatherData) {
   const today = new Date().toISOString().split("T")[0];
   const currentDay = weatherData.days.find((day) => day.datetime === today);
@@ -26,20 +21,6 @@ function renderAPIinInterface(weatherData) {
   document.getElementById("umid_value").innerHTML = `${currentDay.humidity} %`
   document.getElementById("condi_value").innerHTML = currentDay.conditions
   document.getElementById("txtTitlePrimary").innerHTML = `Previsão  do Tempo em ${weatherData.resolvedAddress}`
-
-  const tableBody = document
-    .getElementById("weather-table")
-    .querySelector("tbody");
-  weatherData.days.forEach((day) => {
-    const row = document.createElement("tr");
-    row.innerHTML = `
-            <td>${formatDate(day.datetime)}</td>
-            <td>${day.tempmax}°C</td>
-            <td>${day.tempmin}°C</td>
-            <td>${day.temp}°C</td>
-        `;
-    tableBody.appendChild(row);
-  });
 }
 
 function renderGraphWithMaxMinTemp(data) {
