@@ -7,7 +7,9 @@
     <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
-    <h1 class="txtTitle" id="txtTitlePrimary"></h1>
+    <div id="loader" class="loader"></div>
+    <div id="content" class="content" style="display: none;">
+        <h1 class="txtTitle" id="txtTitlePrimary"></h1>
     
      <section class="sensor-data">
         <div class="sensor-readings">
@@ -39,11 +41,10 @@
             </div>                  
         </div>
     </section> 
-
     <figure class="highcharts-figure">
         <div id="container"></div>
     </figure>
-
+    </div>
     <script src="https://code.highcharts.com/highcharts.js"></script>
     <script src="https://code.highcharts.com/modules/exporting.js"></script>
     <script src="https://code.highcharts.com/modules/export-data.js"></script>

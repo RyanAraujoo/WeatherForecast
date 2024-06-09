@@ -9,6 +9,7 @@ async function fetchWeatherData() {
     const data = await response.json();
     renderAPIinInterface(data);
     renderGraphWithMaxMinTemp(data.days);
+    desactiveLoader()
   } catch (error) {
     console.error("Erro:", error);
   }
@@ -17,10 +18,12 @@ async function fetchWeatherData() {
 function renderAPIinInterface(weatherData) {
   const today = new Date().toISOString().split("T")[0];
   const currentDay = weatherData.days.find((day) => day.datetime === today);
-  document.getElementById("temp_value").innerHTML = `${currentDay.temp} Cº`
-  document.getElementById("umid_value").innerHTML = `${currentDay.humidity} %`
-  document.getElementById("condi_value").innerHTML = currentDay.conditions
-  document.getElementById("txtTitlePrimary").innerHTML = `Previsão  do Tempo em ${weatherData.resolvedAddress}`
+  document.getElementById("temp_value").innerHTML = `${currentDay.temp} Cº`;
+  document.getElementById("umid_value").innerHTML = `${currentDay.humidity} %`;
+  document.getElementById("condi_value").innerHTML = currentDay.conditions;
+  document.getElementById(
+    "txtTitlePrimary"
+  ).innerHTML = `Previsão  do Tempo em ${weatherData.resolvedAddress}`;
 }
 
 function renderGraphWithMaxMinTemp(data) {
@@ -77,3 +80,11 @@ function renderGraphWithMaxMinTemp(data) {
 }
 
 fetchWeatherData();
+
+function desactiveLoader() {
+  const loader = document.getElementById("loader");
+  const content = document.getElementById("content");
+
+  loader.style.display = "none";
+  content.style.display = "block";
+}
