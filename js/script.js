@@ -18,12 +18,10 @@ async function fetchWeatherData() {
 function renderAPIinInterface(weatherData) {
   const today = new Date().toISOString().split("T")[0];
   const currentDay = weatherData.days.find((day) => day.datetime === today);
-  document.getElementById("temp_value").innerHTML = `${currentDay.temp} Cº`;
-  document.getElementById("umid_value").innerHTML = `${currentDay.humidity} %`;
-  document.getElementById("condi_value").innerHTML = currentDay.conditions;
-  document.getElementById(
-    "txtTitlePrimary"
-  ).innerHTML = `Previsão  do Tempo em ${weatherData.resolvedAddress}`;
+  document.getElementById("temp_value").appendChild(document.createTextNode(`${currentDay.temp} Cº`));
+  document.getElementById("umid_value").appendChild(document.createTextNode(`${currentDay.humidity} %`));
+  document.getElementById("condi_value").appendChild(document.createTextNode(`${currentDay.conditions} %`));
+  document.getElementById("txtTitlePrimary").appendChild(document.createTextNode(`Previsão  do Tempo em ${weatherData.resolvedAddress}`));
 }
 
 function renderGraphWithMaxMinTemp(data) {
