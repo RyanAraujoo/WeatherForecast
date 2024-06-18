@@ -3,9 +3,52 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Previsão do Tempo</title>
+    <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
+    <div id="loader" class="loader"></div>
+    <div id="content" class="content" style="display: none;">
+        <h1 class="txtTitle" id="txtTitlePrimary"></h1>
     
+     <section class="sensor-data">
+        <div class="sensor-readings">
+            <div class="reading">
+                <div class="reading-info">
+                    <div class="reading-title">
+                        <span class="title">Temperatura Atual</span>
+                        <span class="title-value" id="temp_value"></span>
+                    </div> 
+                </div>                    
+            </div>
+
+            <div class="reading">
+                <div class="reading-info">
+                    <div class="reading-title">
+                        <span class="title">Umidade Ambiente Atual</span> 
+                        <span class="title-value" id="umid_value"></span>
+                    </div> 
+                </div>                    
+            </div>
+
+            <div class="reading">
+                <div class="reading-info">
+                    <div class="reading-title">
+                        <span class="title">Condição Atual</span>
+                        <span class="title-value" id="condi_value"></span>
+                    </div> 
+                </div>                   
+            </div>                  
+        </div>
+    </section> 
+    <figure class="highcharts-figure">
+        <div id="container"></div>
+    </figure>
+    </div>
+    <script src="https://code.highcharts.com/highcharts.js"></script>
+    <script src="https://code.highcharts.com/modules/exporting.js"></script>
+    <script src="https://code.highcharts.com/modules/export-data.js"></script>
+    <script src="https://code.highcharts.com/modules/accessibility.js"></script>
+    <script src="js/script.js"></script>
 </body>
 </html>
