@@ -12,9 +12,15 @@ Este é um projeto de aplicativo web que consome dados da API de previsão do te
 - API: Visual Crossing Weather API
 
 ### Como executar o projeto
+
 1. Clone este repositório: `git clone https://github.com/seu-usuario/weather-app.git`
 2. Navegue até o diretório do projeto: `cd weather-app`
-3. Abra o arquivo `index.html` em seu navegador.
+3. Crie um arquivo `data.js` dentro da pasta `js` com o seguinte conteúdo:
+    ```javascript
+    const keyApi = 'sua-chave-api-aqui';
+    ```
+   Para obter a chave API, acesse a documentação do serviço e crie um login.
+4. Abra o arquivo `index.html` em seu navegador.
 
 ### Como utilizar o aplicativo
 - Ao abrir o aplicativo, você verá a previsão do tempo atual para sua localização.

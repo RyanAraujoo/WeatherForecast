@@ -1,7 +1,7 @@
 async function fetchWeatherData() {
   try {
     apiUrl =
-      "https://weather.visualcrossing.com/VisualCrossingWebServices/rest/services/timeline/ITAMBE%20BA?unitGroup=metric&include=days%2Chours&key=8XNTXJF3VUFF3A47D4GHAGP54&contentType=json";
+      `https://weather.visualcrossing.com/VisualCrossingWebServices/rest/services/timeline/ITAMBE%20BA?unitGroup=metric&include=days%2Chours&key=${keyApi}&contentType=json`;
     const response = await fetch(apiUrl);
     if (!response.ok) {
       throw new Error("Erro ao buscar os dados da API");
