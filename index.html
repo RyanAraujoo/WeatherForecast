@@ -1,79 +1,90 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Previsão do Tempo</title>
-    <link rel="stylesheet" href="css/style.css">
-</head>
-<body>
-    <article class="getCities">
-        <h1>Consulte o clima de uma localidade Brasileira</h1>
+    <link rel="stylesheet" href="css/style.css" />
+  </head>
+  <body>
+    <article class="boxForm">
+      <form class="getCities">
+        <h1>Selecione uma localidade Brasileira</h1>
+        <p>Nesta aplicação, será possível visualizar a tempetura atual da cidade selecionada</p>
         <section class="boxFormCities">
-            <div class="uflist">
-                <p>Selecione o Estado: </p>
-                <select id="uflist"></select>
-            </div>
+          <div class="uflist">
+            <p>Selecione o Estado:</p>
+            <select id="uflist"></select>
+          </div>
         </section>
         <section class="boxFormCities">
-            <div class="citylist">
-                <p>Selecione a cidade: </p>
-                <select id="citylist"></select>
-            </div>
+          <div class="citylist">
+            <p>Selecione a cidade:</p>
+            <select id="citylist"></select>
+          </div>
         </section>
         <section class="boxFormCities">
-            <div class="districtlist">
-                <p>Selecione Distrito: ( Opcional ) </p>
-                <select id="districtlist"></select>
-            </div>
+          <div class="districtlist">
+            <p>Selecione Distrito: ( Opcional )</p>
+            <select id="districtlist"></select>
+          </div>
         </section>
         <section class="boxFormCities">
-            <input type="button" value="Consultar Informações" id="btnWeather" onclick="renderWeatherbtn()"/>
+          <input
+            type="button"
+            value="Consultar Informações"
+            id="btnWeather"
+            onclick="renderWeatherbtn()"
+          />
         </section>
+      </form>
     </article>
-    <div id="loader" class="loader" style="display: none;"></div>
-    <div id="content" class="content" style="display: none;">
-        <h1 class="txtTitle" id="txtTitlePrimary"></h1>
-    
-     <section class="sensor-data">
+    <article id="loader-container" style="display: none">
+        <div id="loader" class="loader"></div>
+    </article>
+    <article id="content" class="content" style="display: none">
+      <h1 class="txtTitle" id="txtTitlePrimary"></h1>
+
+      <section class="sensor-data">
         <div class="sensor-readings">
-            <div class="reading">
-                <div class="reading-info">
-                    <div class="reading-title">
-                        <span class="title">Temperatura Atual</span>
-                        <span class="title-value" id="temp_value"></span>
-                    </div> 
-                </div>                    
+          <div class="reading">
+            <div class="reading-info">
+              <div class="reading-title">
+                <span class="title">Temperatura Atual</span>
+                <span class="title-value" id="temp_value"></span>
+              </div>
             </div>
+          </div>
 
-            <div class="reading">
-                <div class="reading-info">
-                    <div class="reading-title">
-                        <span class="title">Umidade Ambiente Atual</span> 
-                        <span class="title-value" id="umid_value"></span>
-                    </div> 
-                </div>                    
+          <div class="reading">
+            <div class="reading-info">
+              <div class="reading-title">
+                <span class="title">Umidade Ambiente Atual</span>
+                <span class="title-value" id="umid_value"></span>
+              </div>
             </div>
+          </div>
 
-            <div class="reading">
-                <div class="reading-info">
-                    <div class="reading-title">
-                        <span class="title">Condição Atual</span>
-                        <span class="title-value" id="condi_value"></span>
-                    </div> 
-                </div>                   
-            </div>                  
+          <div class="reading">
+            <div class="reading-info">
+              <div class="reading-title">
+                <span class="title">Condição Atual</span>
+                <span class="title-value" id="condi_value"></span>
+              </div>
+            </div>
+          </div>
         </div>
-    </section> 
-    <figure class="highcharts-figure">
+      </section>
+      <figure class="highcharts-figure">
         <div id="container"></div>
-    </figure>
-    </div>
+      </figure>
+    </article>
+
     <script src="https://code.highcharts.com/highcharts.js"></script>
     <script src="https://code.highcharts.com/modules/exporting.js"></script>
     <script src="https://code.highcharts.com/modules/export-data.js"></script>
     <script src="https://code.highcharts.com/modules/accessibility.js"></script>
     <script src="js/data.js"></script>
     <script src="js/script.js"></script>
-</body>
+  </body>
 </html>

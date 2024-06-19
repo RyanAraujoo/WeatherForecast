@@ -1,3 +1,6 @@
+const loader = document.getElementById("loader-container");
+const content = document.getElementById("content");
+
 async function fetchWeatherData(name) {
   try {
     apiUrl =
@@ -9,7 +12,6 @@ async function fetchWeatherData(name) {
     const data = await response.json();
     renderAPIinInterface(data);
     renderGraphWithMaxMinTemp(data.days);
-    desactiveLoader()
   } catch (error) {
     console.error("Erro:", error);
   }
@@ -77,15 +79,6 @@ function renderGraphWithMaxMinTemp(data) {
   });
 }
 
-
-function desactiveLoader() {
-  const loader = document.getElementById("loader");
-  const content = document.getElementById("content");
-
-  loader.style.display = "none";
-  content.style.display = "block";
-}
-
 const uflist = document.getElementById('uflist');
 const citylist = document.getElementById('citylist');
 const districtlist = document.getElementById('districtlist');
@@ -94,6 +87,7 @@ const btnWeather = document.getElementById('btnWeather')
 const uflistBox = document.querySelector('.uflist');
 const citylistBox = document.querySelector('.citylist');
 const districtlistBox = document.querySelector('.districtlist');
+const boxForm = document.querySelector('.boxForm')
 
 var nameUF = ""
 var nameCity = ""
@@ -111,9 +105,13 @@ function populateSelectTofetchWeatherData(selectElement, items) {
 
 async function fetchStates() {
   try {
+      loader.style.display = 'block'
       const response = await fetch('https://servicodados.ibge.gov.br/api/v1/localidades/estados');
       const data = await response.json()
       populateSelectTofetchWeatherData(uflist, data)
+      boxForm.style.display = 'block'
+      uflistBox.style.display = 'block'
+      loader.style.display = 'none'
   } catch (error) {
       console.error('Erro ao buscar estados:', error);
   }
@@ -158,22 +156,20 @@ async function fetchCities(ufId) {
   }
 }
 
-function renderWeatherbtn() {
+async function renderWeatherbtn() {
     if (nameDistrict == "") {
       name = `${nameCity}, ${nameUF}, Brasil`;
     } else {
-      name = `${nameDistrict}, ${nameUF}, Brasil`;
+      name = `${nameDistrict}, ${nameCity}, ${nameUF}, Brasil`;
     }
-    console.log(name)
-    fetchWeatherData(name)
-    
+    loader.style.display = 'block'
     let formWeather = document.querySelector('.getCities');
-    formWeather.style.display = "none"
+    formWeather.style.display = 'none'
 
-    let content = document.getElementById("content");
-    content.style.display = "block"
-
-
+    await fetchWeatherData(name)
+    loader.style.display = 'none'
+    content.style.display = 'block'
+    
 }
 
 
