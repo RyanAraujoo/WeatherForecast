@@ -7,7 +7,31 @@
     <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
-    <div id="loader" class="loader"></div>
+    <article class="getCities">
+        <h1>Consulte o clima de uma localidade Brasileira</h1>
+        <section class="boxFormCities">
+            <div class="uflist">
+                <p>Selecione o Estado: </p>
+                <select id="uflist"></select>
+            </div>
+        </section>
+        <section class="boxFormCities">
+            <div class="citylist">
+                <p>Selecione a cidade: </p>
+                <select id="citylist"></select>
+            </div>
+        </section>
+        <section class="boxFormCities">
+            <div class="districtlist">
+                <p>Selecione Distrito: ( Opcional ) </p>
+                <select id="districtlist"></select>
+            </div>
+        </section>
+        <section class="boxFormCities">
+            <input type="button" value="Consultar Informações" id="btnWeather" onclick="renderWeatherbtn()"/>
+        </section>
+    </article>
+    <div id="loader" class="loader" style="display: none;"></div>
     <div id="content" class="content" style="display: none;">
         <h1 class="txtTitle" id="txtTitlePrimary"></h1>
     

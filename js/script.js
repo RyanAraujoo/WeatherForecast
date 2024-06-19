@@ -1,7 +1,7 @@
-async function fetchWeatherData() {
+async function fetchWeatherData(name) {
   try {
     apiUrl =
-      `https://weather.visualcrossing.com/VisualCrossingWebServices/rest/services/timeline/ITAMBE%20BA?unitGroup=metric&include=days%2Chours&key=${keyApi}&contentType=json`;
+      `https://weather.visualcrossing.com/VisualCrossingWebServices/rest/services/timeline/${name}?unitGroup=metric&include=days%2Chours&key=${keyApi}&contentType=json`;
     const response = await fetch(apiUrl);
     if (!response.ok) {
       throw new Error("Erro ao buscar os dados da API");
@@ -77,7 +77,6 @@ function renderGraphWithMaxMinTemp(data) {
   });
 }
 
-fetchWeatherData();
 
 function desactiveLoader() {
   const loader = document.getElementById("loader");
@@ -86,3 +85,99 @@ function desactiveLoader() {
   loader.style.display = "none";
   content.style.display = "block";
 }
+
+const uflist = document.getElementById('uflist');
+const citylist = document.getElementById('citylist');
+const districtlist = document.getElementById('districtlist');
+const btnWeather = document.getElementById('btnWeather')
+
+const uflistBox = document.querySelector('.uflist');
+const citylistBox = document.querySelector('.citylist');
+const districtlistBox = document.querySelector('.districtlist');
+
+var nameUF = ""
+var nameCity = ""
+var nameDistrict = ""
+
+function populateSelectTofetchWeatherData(selectElement, items) {
+    selectElement.textContent = ''
+    items.forEach(item => {
+        const option = document.createElement('option');
+        option.value = item.id;
+        option.text = item.nome;
+        selectElement.appendChild(option);
+    });
+}
+
+async function fetchStates() {
+  try {
+      const response = await fetch('https://servicodados.ibge.gov.br/api/v1/localidades/estados');
+      const data = await response.json()
+      populateSelectTofetchWeatherData(uflist, data)
+  } catch (error) {
+      console.error('Erro ao buscar estados:', error);
+  }
+}
+
+const statesOfList = fetchStates()
+uflist.addEventListener('change', (event) => {
+  fetchCities(event.target.value)
+  nameUF = event.target.selectedOptions[0].text;
+});
+citylist.addEventListener('change', (event) => {
+  fetchDistricts(event.target.value)
+  nameCity = event.target.selectedOptions[0].text;
+});
+
+districtlist.addEventListener('change', (event) => {
+  nameDistrict = event.target.selectedOptions[0].text;
+});
+
+
+
+async function fetchDistricts(cityId) {
+  try {
+      const response = await fetch(`https://servicodados.ibge.gov.br/api/v1/localidades/municipios/${cityId}/distritos`);
+      const data = await response.json();
+      populateSelectTofetchWeatherData(districtlist, data);
+      districtlistBox.style.display  = 'block'
+  } catch (error) {
+      console.error('Erro ao buscar distritos:', error);
+  }
+}
+
+async function fetchCities(ufId) {
+  try {
+      const response = await fetch(`https://servicodados.ibge.gov.br/api/v1/localidades/estados/${ufId}/municipios`);
+      const data = await response.json();
+      populateSelectTofetchWeatherData(citylist, data)
+      citylistBox.style.display = 'block'
+      btnWeather.style.display = 'block'
+  } catch (error) {
+      console.error('Erro ao buscar municípios:', error);
+  }
+}
+
+function renderWeatherbtn() {
+    if (nameDistrict == "") {
+      name = `${nameCity}, ${nameUF}, Brasil`;
+    } else {
+      name = `${nameDistrict}, ${nameUF}, Brasil`;
+    }
+    console.log(name)
+    fetchWeatherData(name)
+    
+    let formWeather = document.querySelector('.getCities');
+    formWeather.style.display = "none"
+
+    let content = document.getElementById("content");
+    content.style.display = "block"
+
+
+}
+
+
+
+
+
+
