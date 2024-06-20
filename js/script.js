@@ -12,9 +12,9 @@ const formWeatherCityItemValue = document.getElementById('form-info-weather-item
 const formWeatherDistrictItemValue = document.getElementById('form-info-weather-item-district-value');
 const formWeatherItemButtonClick = document.getElementById('form-info-weather-item-btn-get-info-weather')
 
-var nameUF = ""
-var nameCity = ""
-var nameDistrict = ""
+var nameUF = null
+var nameCity = null
+var nameDistrict = null
 
 async function fetchGetWeatherData(localy) {
   try {
@@ -105,40 +105,17 @@ function populateSelectTofetchGetWeatherData(selectElement, items) {
 
 async function fetchStates() {
   try {
-      loaderContainer.style.display = 'block'
       const response = await fetch('https://servicodados.ibge.gov.br/api/v1/localidades/estados');
-      const data = await response.json()
-      populateSelectTofetchGetWeatherData(formWeatherUFItemValue, data)
-      formToWeatherContainer.style.display = 'block'
-      formWeatherUFItem.style.display = 'block'
-      loaderContainer.style.display = 'none'
+      return await response.json()
   } catch (error) {
       console.error('Erro ao buscar estados:', error);
   }
 }
 
-const statesOfList = fetchStates()
-formWeatherUFItemValue.addEventListener('change', (event) => {
-  fetchCities(event.target.value)
-  nameUF = event.target.selectedOptions[0].text;
-});
-formWeatherCityItemValue.addEventListener('change', (event) => {
-  fetchDistricts(event.target.value)
-  nameCity = event.target.selectedOptions[0].text;
-});
-
-formWeatherDistrictItemValue.addEventListener('change', (event) => {
-  nameDistrict = event.target.selectedOptions[0].text;
-});
-
-
-
 async function fetchDistricts(cityId) {
   try {
       const response = await fetch(`https://servicodados.ibge.gov.br/api/v1/localidades/municipios/${cityId}/distritos`);
-      const data = await response.json();
-      populateSelectTofetchGetWeatherData(formWeatherDistrictItemValue, data);
-      formWeatherDistrictItem.style.display  = 'block'
+      return await response.json();
   } catch (error) {
       console.error('Erro ao buscar distritos:', error);
   }
@@ -147,37 +124,87 @@ async function fetchDistricts(cityId) {
 async function fetchCities(ufId) {
   try {
       const response = await fetch(`https://servicodados.ibge.gov.br/api/v1/localidades/estados/${ufId}/municipios`);
-      const data = await response.json();
-      populateSelectTofetchGetWeatherData(formWeatherCityItemValue, data)
-      formWeatherCityItem.style.display = 'block'
-      formWeatherItemButtonClick.style.display = 'block'
+      return await response.json();
   } catch (error) {
       console.error('Erro ao buscar municípios:', error);
   }
 }
 
 async function renderCurrentWeatherSelectedInfo() {
-    loaderContainer.style.display = 'block'
-    formToWeatherContainer.style.display = 'none'
-
-    let localyValue = ""
-      if (nameDistrict == "") {
-        localyValue = `${nameCity}, ${nameUF}, Brasil`;
-      } else {
-        localyValue = `${nameDistrict}, ${nameCity}, ${nameUF}, Brasil`;
-      }
-
+    showLoaderInTemplateHTML()
+    let localyValue = definylocalyValueTofetchGetWeather()
     let getWeatherData = await fetchGetWeatherData(localyValue)
     renderInfoTodayWeatherInDashboard(getWeatherData);
-    renderGraphWithMaxMinWeather(getWeatherData.days);
-    loaderContainer.style.display = 'none'
-    infoWeatherContainer.style.display = 'block'
-    
+    renderGraphWithMaxMinWeather(getWeatherData.days)
+    showWeatherInfo()
+}
+
+function definylocalyValueTofetchGetWeather() {
+  return nameDistrict == null ? `${nameDistrict}, ${nameCity}, ${nameUF}, Brasil` : `${nameCity}, ${nameUF}, Brasil`;
+}
+
+function renderInTemplateHTML(loaderContainerDisplayValue, formWeatherContainerDisplayValue, infoWeatherContainerDisplayValue) {
+  if (loaderContainer) {
+    loaderContainer.style.display = loaderContainerDisplayValue;
+  }
+  
+  if (formToWeatherContainer) {
+    formToWeatherContainer.style.display = formWeatherContainerDisplayValue;
+  }
+  
+  if (infoWeatherContainer) {
+    infoWeatherContainer.style.display = infoWeatherContainerDisplayValue;
+  }
+}
+
+function showLoaderInTemplateHTML() {
+  renderInTemplateHTML('block','none','none')
 }
 
 
+function showFormWeatherInfoInTemplateHTML() {
+  renderInTemplateHTML('none','block','none')
+}
 
 
+function showWeatherInfo() {
+  renderInTemplateHTML('none','none','block')
+}
+
+async function onLoadPag() {
+  showLoaderInTemplateHTML()
+  const dataFetchStates = await fetchStates()
+  populateSelectTofetchGetWeatherData(formWeatherUFItemValue, dataFetchStates)
+  nameUF = dataFetchStates[0].nome
+  showFormWeatherInfoInTemplateHTML()
+  formWeatherUFItem.style.display = 'block'
+}
+
+onLoadPag()
+
+formWeatherUFItemValue.addEventListener('change', async (event) => {
+  showLoaderInTemplateHTML()
+  let dataFetchCities = await fetchCities(event.target.value)
+  nameUF = event.target.selectedOptions[0].text;
+  nameCity = dataFetchCities[0].nome
+  populateSelectTofetchGetWeatherData(formWeatherCityItemValue, dataFetchCities)
+  formWeatherCityItem.style.display = 'block'
+  formWeatherItemButtonClick.style.display = 'block'
+  showFormWeatherInfoInTemplateHTML()
+});
+
+formWeatherCityItemValue.addEventListener('change', async (event) => {
+  showLoaderInTemplateHTML()
+  let dataFectchDistricts = await fetchDistricts(event.target.value)
+  nameCity = event.target.selectedOptions[0].text;
+  populateSelectTofetchGetWeatherData(formWeatherDistrictItemValue, dataFectchDistricts);
+  formWeatherDistrictItem.style.display  = 'block'
+  showFormWeatherInfoInTemplateHTML()
+});
+
+formWeatherDistrictItemValue.addEventListener('change', async (event) => {
+  nameDistrict = event.target.selectedOptions[0].text;
+});
 
 
 
