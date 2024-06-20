@@ -7,77 +7,65 @@
     <link rel="stylesheet" href="css/style.css" />
   </head>
   <body>
-    <article class="boxForm">
-      <form class="getCities">
+
+    <article class="box-form-info-weather">
+      <form class="form-info-weather">
         <h1>Selecione uma localidade Brasileira</h1>
         <p>Nesta aplicação, será possível visualizar a tempetura atual da cidade selecionada</p>
-        <section class="boxFormCities">
-          <div class="uflist">
+        <section class="form-info-weather-item">
+          <div class="form-info-weather-item-uf">
             <p>Selecione o Estado:</p>
-            <select id="uflist"></select>
+            <select id="form-info-weather-item-uf-value"></select>
           </div>
         </section>
-        <section class="boxFormCities">
-          <div class="citylist">
-            <p>Selecione a cidade:</p>
-            <select id="citylist"></select>
+        <section class="form-info-weather-item">
+          <div class="form-info-weather-item-city">
+            <p>Selecione a Cidade:</p>
+            <select id="form-info-weather-item-city-value"></select>
           </div>
         </section>
-        <section class="boxFormCities">
-          <div class="districtlist">
+        <section class="form-info-weather-item">
+          <div class="form-info-weather-item-district">
             <p>Selecione Distrito: ( Opcional )</p>
-            <select id="districtlist"></select>
+            <select id="form-info-weather-item-district-value"></select>
           </div>
         </section>
-        <section class="boxFormCities">
+        <section class="form-info-weather-item">
           <input
             type="button"
             value="Consultar Informações"
-            id="btnWeather"
-            onclick="renderWeatherbtn()"
+            id="form-info-weather-item-btn-get-info-weather"
+            onclick="renderCurrentWeatherSelectedInfo()"
           />
         </section>
       </form>
     </article>
-    <article id="loader-container" style="display: none">
-        <div id="loader" class="loader"></div>
+
+    <article class="box-loader">
+        <div id="loader"></div>
     </article>
-    <article id="content" class="content" style="display: none">
-      <h1 class="txtTitle" id="txtTitlePrimary"></h1>
 
-      <section class="sensor-data">
-        <div class="sensor-readings">
-          <div class="reading">
-            <div class="reading-info">
-              <div class="reading-title">
-                <span class="title">Temperatura Atual</span>
-                <span class="title-value" id="temp_value"></span>
-              </div>
-            </div>
+    <article class="box-content-info-weather">
+      <h1 class="box-content-info-weather-title" id="box-content-info-weather-title-primary-value"></h1>
+      <section class="box-content-info-weather-itens">
+          <div class="box-content-info-weather-item">
+                <p class="box-content-info-weather-item-title">Temperatura Atual</p>
+                <p id="box-content-info-weather-item-value-temp"></p>
           </div>
-
-          <div class="reading">
-            <div class="reading-info">
-              <div class="reading-title">
-                <span class="title">Umidade Ambiente Atual</span>
-                <span class="title-value" id="umid_value"></span>
-              </div>
-            </div>
+          <div class="box-content-info-weather-item">
+                <p class="box-content-info-weather-item-title">Umidade Ambiente Atual</p>
+                <p id="box-content-info-weather-item-value-umid"></p>
           </div>
-
-          <div class="reading">
-            <div class="reading-info">
-              <div class="reading-title">
-                <span class="title">Condição Atual</span>
-                <span class="title-value" id="condi_value"></span>
-              </div>
-            </div>
+          <div class="box-content-info-weather-item">
+                <p class="box-content-info-weather-item-title">Condição Atual</p>
+                <p id="box-content-info-weather-item-value-cond"></p>
           </div>
-        </div>
       </section>
-      <figure class="highcharts-figure">
-        <div id="container"></div>
+      <section>
+          <figure class="highcharts-figure">
+          <div id="container"></div>
       </figure>
+      </section>
     </article>
 
     <script src="https://code.highcharts.com/highcharts.js"></script>

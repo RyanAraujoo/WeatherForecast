@@ -1,32 +1,46 @@
-const loader = document.getElementById("loader-container");
-const content = document.getElementById("content");
+const loaderContainer = document.querySelector(".box-loader");
+const infoWeatherContainer = document.querySelector(".box-content-info-weather");
+const formToWeatherContainer = document.querySelector('.box-form-info-weather')
 
-async function fetchWeatherData(name) {
+const formWeatherUFItem = document.querySelector('.form-info-weather-item-uf');
+const formWeatherCityItem = document.querySelector('.form-info-weather-item-city');
+const formWeatherDistrictItem = document.querySelector('.form-info-weather-item-district');
+
+
+const formWeatherUFItemValue = document.getElementById('form-info-weather-item-uf-value');
+const formWeatherCityItemValue = document.getElementById('form-info-weather-item-city-value');
+const formWeatherDistrictItemValue = document.getElementById('form-info-weather-item-district-value');
+const formWeatherItemButtonClick = document.getElementById('form-info-weather-item-btn-get-info-weather')
+
+var nameUF = ""
+var nameCity = ""
+var nameDistrict = ""
+
+async function fetchGetWeatherData(localy) {
   try {
     apiUrl =
-      `https://weather.visualcrossing.com/VisualCrossingWebServices/rest/services/timeline/${name}?unitGroup=metric&include=days%2Chours&key=${keyApi}&contentType=json`;
+      `https://weather.visualcrossing.com/VisualCrossingWebServices/rest/services/timeline/${localy}?unitGroup=metric&include=days%2Chours&key=${keyApi}&contentType=json`;
     const response = await fetch(apiUrl);
     if (!response.ok) {
       throw new Error("Erro ao buscar os dados da API");
     }
     const data = await response.json();
-    renderAPIinInterface(data);
-    renderGraphWithMaxMinTemp(data.days);
+    return data
   } catch (error) {
     console.error("Erro:", error);
   }
 }
 
-function renderAPIinInterface(weatherData) {
+function renderInfoTodayWeatherInDashboard(weatherData) {
   const today = new Date().toISOString().split("T")[0];
   const currentDay = weatherData.days.find((day) => day.datetime === today);
-  document.getElementById("temp_value").appendChild(document.createTextNode(`${currentDay.temp} Cº`));
-  document.getElementById("umid_value").appendChild(document.createTextNode(`${currentDay.humidity} %`));
-  document.getElementById("condi_value").appendChild(document.createTextNode(`${currentDay.conditions} %`));
-  document.getElementById("txtTitlePrimary").appendChild(document.createTextNode(`Previsão  do Tempo em ${weatherData.resolvedAddress}`));
+  document.getElementById("box-content-info-weather-item-value-temp").appendChild(document.createTextNode(`${currentDay.temp} Cº`));
+  document.getElementById("box-content-info-weather-item-value-umid").appendChild(document.createTextNode(`${currentDay.humidity} %`));
+  document.getElementById("box-content-info-weather-item-value-cond").appendChild(document.createTextNode(`${currentDay.conditions} %`));
+  document.getElementById("box-content-info-weather-title-primary-value").appendChild(document.createTextNode(`Previsão  do Tempo em ${weatherData.resolvedAddress}`));
 }
 
-function renderGraphWithMaxMinTemp(data) {
+function renderGraphWithMaxMinWeather(data) {
   // Data retrieved https://en.wikipedia.org/wiki/List_of_cities_by_average_temperature
   // Lista para armazenar os valores de "datetime"
   const dates = [];
@@ -68,32 +82,18 @@ function renderGraphWithMaxMinTemp(data) {
     },
     series: [
       {
-        name: "Max",
+        city: "Max",
         data: listOfTempMax,
       },
       {
-        name: "Min",
+        city: "Min",
         data: listOfTempMin,
       },
     ],
   });
 }
 
-const uflist = document.getElementById('uflist');
-const citylist = document.getElementById('citylist');
-const districtlist = document.getElementById('districtlist');
-const btnWeather = document.getElementById('btnWeather')
-
-const uflistBox = document.querySelector('.uflist');
-const citylistBox = document.querySelector('.citylist');
-const districtlistBox = document.querySelector('.districtlist');
-const boxForm = document.querySelector('.boxForm')
-
-var nameUF = ""
-var nameCity = ""
-var nameDistrict = ""
-
-function populateSelectTofetchWeatherData(selectElement, items) {
+function populateSelectTofetchGetWeatherData(selectElement, items) {
     selectElement.textContent = ''
     items.forEach(item => {
         const option = document.createElement('option');
@@ -105,29 +105,29 @@ function populateSelectTofetchWeatherData(selectElement, items) {
 
 async function fetchStates() {
   try {
-      loader.style.display = 'block'
+      loaderContainer.style.display = 'block'
       const response = await fetch('https://servicodados.ibge.gov.br/api/v1/localidades/estados');
       const data = await response.json()
-      populateSelectTofetchWeatherData(uflist, data)
-      boxForm.style.display = 'block'
-      uflistBox.style.display = 'block'
-      loader.style.display = 'none'
+      populateSelectTofetchGetWeatherData(formWeatherUFItemValue, data)
+      formToWeatherContainer.style.display = 'block'
+      formWeatherUFItem.style.display = 'block'
+      loaderContainer.style.display = 'none'
   } catch (error) {
       console.error('Erro ao buscar estados:', error);
   }
 }
 
 const statesOfList = fetchStates()
-uflist.addEventListener('change', (event) => {
+formWeatherUFItemValue.addEventListener('change', (event) => {
   fetchCities(event.target.value)
   nameUF = event.target.selectedOptions[0].text;
 });
-citylist.addEventListener('change', (event) => {
+formWeatherCityItemValue.addEventListener('change', (event) => {
   fetchDistricts(event.target.value)
   nameCity = event.target.selectedOptions[0].text;
 });
 
-districtlist.addEventListener('change', (event) => {
+formWeatherDistrictItemValue.addEventListener('change', (event) => {
   nameDistrict = event.target.selectedOptions[0].text;
 });
 
@@ -137,8 +137,8 @@ async function fetchDistricts(cityId) {
   try {
       const response = await fetch(`https://servicodados.ibge.gov.br/api/v1/localidades/municipios/${cityId}/distritos`);
       const data = await response.json();
-      populateSelectTofetchWeatherData(districtlist, data);
-      districtlistBox.style.display  = 'block'
+      populateSelectTofetchGetWeatherData(formWeatherDistrictItemValue, data);
+      formWeatherDistrictItem.style.display  = 'block'
   } catch (error) {
       console.error('Erro ao buscar distritos:', error);
   }
@@ -148,29 +148,34 @@ async function fetchCities(ufId) {
   try {
       const response = await fetch(`https://servicodados.ibge.gov.br/api/v1/localidades/estados/${ufId}/municipios`);
       const data = await response.json();
-      populateSelectTofetchWeatherData(citylist, data)
-      citylistBox.style.display = 'block'
-      btnWeather.style.display = 'block'
+      populateSelectTofetchGetWeatherData(formWeatherCityItemValue, data)
+      formWeatherCityItem.style.display = 'block'
+      formWeatherItemButtonClick.style.display = 'block'
   } catch (error) {
       console.error('Erro ao buscar municípios:', error);
   }
 }
 
-async function renderWeatherbtn() {
-    if (nameDistrict == "") {
-      name = `${nameCity}, ${nameUF}, Brasil`;
-    } else {
-      name = `${nameDistrict}, ${nameCity}, ${nameUF}, Brasil`;
-    }
-    loader.style.display = 'block'
-    let formWeather = document.querySelector('.getCities');
-    formWeather.style.display = 'none'
+async function renderCurrentWeatherSelectedInfo() {
+    loaderContainer.style.display = 'block'
+    formToWeatherContainer.style.display = 'none'
 
-    await fetchWeatherData(name)
-    loader.style.display = 'none'
-    content.style.display = 'block'
+    let localyValue = ""
+      if (nameDistrict == "") {
+        localyValue = `${nameCity}, ${nameUF}, Brasil`;
+      } else {
+        localyValue = `${nameDistrict}, ${nameCity}, ${nameUF}, Brasil`;
+      }
+
+    let getWeatherData = await fetchGetWeatherData(localyValue)
+    renderInfoTodayWeatherInDashboard(getWeatherData);
+    renderGraphWithMaxMinWeather(getWeatherData.days);
+    loaderContainer.style.display = 'none'
+    infoWeatherContainer.style.display = 'block'
     
 }
+
+
 
 
 
